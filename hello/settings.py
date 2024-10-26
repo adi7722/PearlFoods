@@ -28,6 +28,7 @@ SECRET_KEY = 'django-insecure-dn1eu)#((22oou_j&&ed#9rh@ze1r*v3=31mlf-+#xz&5o0bq!
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'vercel.app', 'now.sh'
     'django-six-kappa.vercel.app',
     'delightful-art-production.up.railway.app',
     'localhost',
@@ -144,7 +145,7 @@ STATICFILES_DIRS = [
 
 #from django.contrib.messages import constants as messages
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
 
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
