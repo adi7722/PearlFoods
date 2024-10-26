@@ -4,13 +4,17 @@
       {
         "src": "hello/wsgi.py",
         "use": "@vercel/python",
-        "config": {"maxLambdaSize": "1000mb", "runtime": "Python 3.12.4"}
-        
+        "config": {
+          "maxLambdaSize": "1000mb",
+          "runtime": "python3.12"
+        }
       },
       {
         "src": "build_files.sh",
         "use": "@vercel/static-build",
-        "config": {"distDir": "staticfiles_build"}
+        "config": {
+          "distDir": "staticfiles_build"
+        }
       }
     ],
     "routes": [
@@ -24,3 +28,4 @@
       }
     ]
   }
+  
