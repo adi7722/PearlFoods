@@ -1,11 +1,12 @@
-@echo off
+#!/bin/bash
+
 echo "BUILD START"
 
-REM Install dependencies
+# Upgrade pip and install dependencies
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 
-REM Collect static files
+# Collect static files
 python manage.py collectstatic --noinput --clear
 
 echo "BUILD END"
