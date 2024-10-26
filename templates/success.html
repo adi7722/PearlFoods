@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Order Success{% endblock title %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Success</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- Bootstrap CSS CDN -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 5px;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h4 {
+            color: #28a745;
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+        p {
+            font-size: 1em;
+            margin-bottom: 10px;
+            color: #343a40;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 10px;
+            font-size: 1.2em;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .order-details {
+            margin-top: 5px;
+        }
+        .order-details table {
+            width: 100%;
+            margin-top: 5px;
+        }
+        .order-details th, .order-details td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .order-details th {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h4>Order Placed Successfully!</h4>
+        <p>Thank you for your order. Your order will be delivered to you shortly.</p>
+        {% comment %} <p>We have sent a confirmation email to your provided email address.</p> {% endcomment %}
+        
+
+        <!-- Order Details Table -->
+        <div class="order-details">
+            <h4>Order Details</h4>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Order ID</th>
+                    <td>{{ order.id }}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ order.name }}</td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td>{{ order.phone }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ order.email }}</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>{{ order.delivery_address }}</td>
+                </tr>
+                <tr>
+                    <th>Total Price</th>
+                    <td>Rs. {{ order.price }}</td>
+                </tr>
+                <tr>
+                    <th>Order Type</th>
+                    <td>{{ order.get_payment_status_display }}</td>
+                </tr>
+            </table>
+
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+    </div>
+</body>
+</html>
+{% endblock body %}

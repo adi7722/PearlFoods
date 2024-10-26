@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Masala Flavors{% endblock title %}
+
+{% block body %}
+<style>
+    
+    .icecream-card {
+        border: 1px solid #ddd;
+        border-radius: 11px;
+        margin-bottom: 5px;
+        overflow: hidden;
+    }
+    .icecream-card img {
+        width: 100%;
+        height: auto;
+        border-radius: 11px;
+        object-fit: cover;
+    }
+    .icecream-card .card-body {
+        padding: 5px;
+    }
+    .icecream-card h5 {
+        background: black;
+        color: white;
+        padding: 5px;
+        text-align: center;
+        border-radius: 11px;
+        margin: -5px -5px 5px -5px;
+    }
+    .price {
+        color: #fff;
+        background-color: #5abe34;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #444;
+        text-align: center;
+        margin: 5px 0;
+    }
+    .quantity-select {
+        margin-top: 5px;
+    }
+    .heading {
+        background: black;
+        color: white;
+        padding: 5px;
+        margin-bottom: 15px; /* Adjust as needed */
+        border-radius: 11px;
+    }
+    .order-form {
+        margin-top: 5px;
+    }
+</style>
+
+
+<div class="container-fluid p-2">
+    <h3 class="text-center heading">Explore Our Delicious Masalas Flavors</h3>
+    
+    <div class="row">
+        <!-- Ice Cream Flavor 1 -->
+        <div class="col-md-2 col-sm-6 col-lg-2">
+            <div class="icecream-card">
+                <img src="{% static 'images/icecream flavors/VD.jpg' %}" alt="Flavor 1">
+                <div class="card-body">
+                    <h5>Vanilla Delight</h5>
+                    <p class="price">PKR 500 - 250g</p>
+                    <p class="price">PKR 900 - 500g</p>
+                    <p class="price">PKR 1500 - 1Kg</p>
+                    <form action="{% url 'order_form' %}" method="post" class="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="Vanilla Delight">
+                        <div class="quantity-select">
+                            <label for="quantity1">Select Quantity:</label>
+                            <select id="quantity1" name="quantity" class="form-control">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1Kg">1Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Order Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Ice Cream Flavor 2 -->
+        <div class="col-md-2 col-sm-6 col-lg-2">
+            <div class="icecream-card">
+                <img src="{% static 'images/icecream flavors/CB.jpg' %}" alt="Flavor 2">
+                <div class="card-body">
+                    <h5>Chocolate Bliss</h5>
+                    <p class="price">PKR 550 - 250g</p>
+                    <p class="price">PKR 1000 - 500g</p>
+                    <p class="price">PKR 1700 - 1Kg</p>
+                    <form action="{% url 'order_form' %}" method="post" class="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="Chocolate Bliss">
+                        <div class="quantity-select">
+                            <label for="quantity2">Select Quantity:</label>
+                            <select id="quantity2" name="quantity" class="form-control">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1Kg">1Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2" >Order Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Ice Cream Flavor 3 -->
+        <div class="col-md-2 col-sm-6 col-lg-2">
+            <div class="icecream-card">
+                <img src="{% static 'images/icecream flavors/SS.jpg' %}" alt="Flavor 3">
+                <div class="card-body">
+                    <h5>Strawberry Swirl</h5>
+                    <p class="price">PKR 600 - 250g</p>
+                    <p class="price">PKR 1100 - 500g</p>
+                    <p class="price">PKR 1900 - 1Kg</p>
+                    <form action="{% url 'order_form' %}" method="post" class="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="Strawberry Swirl">
+                        <div class="quantity-select">
+                            <label for="quantity3">Select Quantity:</label>
+                            <select id="quantity3" name="quantity" class="form-control">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1Kg">1Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Order Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Ice Cream Flavor 4 -->
+        <div class="col-md-2 col-sm-6 col-lg-2">
+            <div class="icecream-card">
+                <img src="{% static 'images/icecream flavors/MT.jpg' %}" alt="Flavor 4">
+                <div class="card-body">
+                    <h5>Mango Tango</h5>
+                    <p class="price">PKR 650 - 250g</p>
+                    <p class="price">PKR 1200 - 500g</p>
+                    <p class="price">PKR 2000 - 1Kg</p>
+                    <form action="{% url 'order_form' %}" method="post" class="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="Mango Tango">
+                        <div class="quantity-select">
+                            <label for="quantity4">Select Quantity:</label>
+                            <select id="quantity4" name="quantity" class="form-control">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1Kg">1Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Order Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Ice Cream Flavor 5 -->
+        <div class="col-md-2 col-sm-6 col-lg-2">
+            <div class="icecream-card">
+                <img src="{% static 'images/icecream flavors/CC.jpg' %}" alt="Flavor 5">
+                <div class="card-body">
+                    <h5>Cookie Crunch</h5>
+                    <p class="price">PKR 700 - 250g</p>
+                    <p class="price">PKR 1300 - 500g</p>
+                    <p class="price">PKR 2200 - 1Kg</p>
+                    <form action="{% url 'order_form' %}" method="post" class="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="Cookie Crunch">
+                        <div class="quantity-select">
+                            <label for="quantity5">Select Quantity:</label>
+                            <select id="quantity5" name="quantity" class="form-control">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1Kg">1Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Order Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Ice Cream Flavor 6 -->
+        <div class="col-md-2 col-sm-6 col-lg-2">
+            <div class="icecream-card">
+                <img src="{% static 'images/icecream flavors/MM.jpg' %}" alt="Flavor 6">
+                <div class="card-body">
+                    <h5>Mint Magic</h5>
+                    <p class="price">PKR 550 - 250g</p>
+                    <p class="price">PKR 1000 - 500g</p>
+                    <p class="price">PKR 1700 - 1Kg</p>
+                    <form action="{% url 'order_form' %}" method="post" class="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="Mint Magic">
+                        <div class="quantity-select">
+                            <label for="quantity6">Select Quantity:</label>
+                            <select id="quantity6" name="quantity" class="form-control">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1Kg">1Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Order Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Ice Cream Flavor 7 -->
+        <div class="col-md-2 col-sm-6 col-lg-2">
+            <div class="icecream-card">
+                <img src="{% static 'images/icecream flavors/HH.jpg' %}" alt="Flavor 7">
+                <div class="card-body">
+                    <h5>Hazelnut Heaven</h5>
+                    <p class="price">PKR 700 - 250g</p>
+                    <p class="price">PKR 1300 - 500g</p>
+                    <p class="price">PKR 2200 - 1Kg</p>
+                    <form action="{% url 'order_form' %}" method="post" class="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="Hazelnut Heaven">
+                        <div class="quantity-select">
+                            <label for="quantity7">Select Quantity:</label>
+                            <select id="quantity7" name="quantity" class="form-control">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1Kg">1Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Order Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Ice Cream Flavor 8 -->
+        <div class="col-md-2 col-sm-6 col-lg-2">
+            <div class="icecream-card">
+                <img src="{% static 'images/icecream flavors/AL.jpg' %}" alt="Flavor 8">
+                <div class="card-body">
+                    <h5>Almond Luxury</h5>
+                    <p class="price">PKR 800 - 250g</p>
+                    <p class="price">PKR 1500 - 500g</p>
+                    <p class="price">PKR 2500 - 1Kg</p>
+                    <form action="{% url 'order_form' %}" method="post" class="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="Almond Luxury">
+                        <div class="quantity-select">
+                            <label for="quantity8">Select Quantity:</label>
+                            <select id="quantity8" name="quantity" class="form-control">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1Kg">1Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Order Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Ice Cream Flavor 9 -->
+        <div class="col-md-2 col-sm-6 col-lg-2">
+            <div class="icecream-card">
+                <img src="{% static 'images/icecream flavors/PC.jpg' %}" alt="Flavor 9">
+                <div class="card-body">
+                    <h5>Pistachio Cream</h5>
+                    <p class="price">PKR 750 - 250g</p>
+                    <p class="price">PKR 1400 - 500g</p>
+                    <p class="price">PKR 2300 - 1Kg</p>
+                    <form action="{% url 'order_form' %}" method="post" class="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="Pistachio Cream">
+                        <div class="quantity-select">
+                            <label for="quantity9">Select Quantity:</label>
+                            <select id="quantity9" name="quantity" class="form-control">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1Kg">1Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Order Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Ice Cream Flavor 10 -->
+        <div class="col-md-2 col-sm-6 col-lg-2">
+            <div class="icecream-card">
+                <img src="{% static 'images/icecream flavors/BW.jpg' %}" alt="Flavor 10">
+                <div class="card-body">
+                    <h5>Blueberry Whip</h5>
+                    <p class="price">PKR 800 - 250g</p>
+                    <p class="price">PKR 1500 - 500g</p>
+                    <p class="price">PKR 2500 - 1Kg</p>
+                    <form action="{% url 'order_form' %}" method="post" class="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="Blueberry Whip">
+                        <div class="quantity-select">
+                            <label for="quantity10">Select Quantity:</label>
+                            <select id="quantity10" name="quantity" class="form-control">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1Kg">1Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Order Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Ice Cream Flavor 11 -->
+        <div class="col-md-2 col-sm-6 col-lg-2">
+            <div class="icecream-card">
+                <img src="{% static 'images/icecream flavors/CP.jpg' %}" alt="Flavor 11">
+                <div class="card-body">
+                    <h5>Coconut Paradise</h5>
+                    <p class="price">PKR 750 - 250g</p>
+                    <p class="price">PKR 1400 - 500g</p>
+                    <p class="price">PKR 2300 - 1Kg</p>
+                    <form action="{% url 'order_form' %}" method="post" class="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="Coconut Paradise">
+                        <div class="quantity-select">
+                            <label for="quantity11">Select Quantity:</label>
+                            <select id="quantity11" name="quantity" class="form-control">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1Kg">1Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Order Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Ice Cream Flavor 12 -->
+        <div class="col-md-2 col-sm-6 col-lg-2">
+            <div class="icecream-card">
+                <img src="{% static 'images/icecream flavors/CB.jpg' %}" alt="Flavor 12">
+                <div class="card-body">
+                    <h5>Caramel Brownie</h5>
+                    <p class="price">PKR 800 - 250g</p>
+                    <p class="price">PKR 1500 - 500g</p>
+                    <p class="price">PKR 2500 - 1Kg</p>
+                    <form action="{% url 'order_form' %}" method="post" class="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="Caramel Brownie">
+                        <div class="quantity-select">
+                            <label for="quantity12">Select Quantity:</label>
+                            <select id="quantity12" name="quantity" class="form-control">
+                                <option value="250g">250g</option>
+                                <option value="500g">500g</option>
+                                <option value="1Kg">1Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Order Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

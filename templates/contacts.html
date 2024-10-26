@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Contact Us{% endblock title %}
+{% block body %}
+<style>
+    .heading {
+        background: black;
+        color: white;
+        padding: 5px;
+        margin: 10px 0; /* Added margin for spacing */
+        text-align: center; /* Center text */
+    }
+
+    .contact-image {
+        width: 100%;
+        height: 200px;
+        display: flex;
+        justify-content: center; /* Center image horizontally */
+        align-items: center; /* Center image vertically */
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Hide overflow */
+    }
+
+    .contact-image img {
+        width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        max-height: 100%; /* Ensure it doesn't exceed container height */
+        object-fit: fill; /* Cover the container without stretching */
+    }
+
+    .centered-container {
+        display: flex;
+        justify-content: center; /* Center form horizontally */
+        padding: 15px; /* Optional: add padding around form container */
+    }
+
+    .form-container {
+        width: 100%;
+        max-width: 600px; /* Limit form width for better readability */
+        background-color: #f8f9fa; /* Optional: background color for form */
+        border-radius: 8px; /* Optional: rounded corners */
+        padding: 20px; /* Add padding inside the form container */
+    }
+
+    .form-control {
+        margin-bottom: 15px; /* Space between form elements */
+    }
+</style>
+
+<h4 class="heading">Contact Us</h4>
+
+<div class="container-fluid centered-container">
+    <div class="form-container">
+        {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-1">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your Name" required>
+            </div>
+            <div class="mb-1">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email Address" required>
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-1">
+                <label for="mobile" class="form-label">Mobile Number</label>
+                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Enter Your Mobile Number" required>
+            </div>
+            <div class="mb-1">
+                <label for="desc" class="form-label">Purpose of Contacting Us</label>
+                <textarea class="form-control" id="desc" name="desc" rows="3" placeholder="Please describe the purpose of your contact." required></textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+        
+    </div>
+</div>
+{% endblock body %}

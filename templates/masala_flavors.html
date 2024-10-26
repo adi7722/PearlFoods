@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Masala Flavors{% endblock title %}
+
+{% block body %}
+<style>
+    .btn-primary {
+        width: 100%;
+        padding: 10px;
+        background-color: black;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-primary:hover {
+        background-color: white;
+        color: black;
+        border: 1px solid black !important;
+    }
+    .icecream-card {
+        border: 1px solid #ddd;
+        border-radius: 11px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+    }
+    .icecream-card:hover {
+        transform: scale(1.05);
+    }
+    .icecream-card img {
+        width: 100%;
+        height: 150px;
+        border-top-left-radius: 11px;
+        border-top-right-radius: 11px;
+        object-fit: cover;
+    }
+    .icecream-card .card-body {
+        padding: 15px;
+    }
+    .icecream-card h5 {
+        background: black;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        border-radius: 11px;
+        margin-bottom: 10px;
+    }
+    .price {
+        color: #fff;
+        background-color: #5abe34;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #444;
+        text-align: center;
+        margin: 5px 0;
+    }
+    .order-form {
+        margin-top: 10px;
+    }
+    .container-fluid {
+        max-width: 1200px;
+        margin: auto;
+    }
+</style>
+
+<div class="container-fluid p-2">
+    <h3 class="text-center heading">Unlimited Variety of Masala Flavors</h3>
+    
+    <div class="row">
+        {% for flavor in flavors %}
+        <div class="col-md-3 col-sm-6 col-lg-3 mb-4">
+            <div class="icecream-card">
+                <img src="{{ flavor.image.url }}" alt="{{ flavor.name }}">
+                <div class="card-body">
+                    <h5>{{ flavor.name }}</h5>
+                    <form action="{% url 'add_to_cart' flavor.id %}" method="post" class="order-form" id="order-form-{{ flavor.id }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="flavor" value="{{ flavor.id }}">
+                        
+                        <!-- Predefined quantities -->
+                        <div>
+                            <label>
+                                <input type="radio" name="quantity" value="250"> 250g - Rs. {{ flavor.price_250g }}
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="radio" name="quantity" value="500"> 500g - Rs. {{ flavor.price_500g }}
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="radio" name="quantity" value="1000"> 1 Kg - Rs. {{ flavor.price_1kg }}
+                            </label>
+                        </div>
+
+                        <!-- Custom quantity input -->
+                        <div class="mt-2">
+                            <label for="custom_quantity">Custom Quantity (in Grams):</label>
+                            <input type="number" name="custom_quantity" id="custom_quantity-{{ flavor.id }}" min="1" placeholder="Enter Quantity in Grams" class="form-control" oninput="calculateTotalPrice({{ flavor.price_per_unit }}, {{ flavor.id }})">
+                        </div>
+
+                        <!-- Total Price display for custom quantity -->
+                        <p>Custom Price: PKR <span id="total_price-{{ flavor.id }}">0</span></p>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary mt-2" onclick="return validateForm()">Add to Cart</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    // Function to calculate and update total price based on custom quantity input
+    function calculateTotalPrice(price_per_ltr, flavor_id) {
+        const customQuantityInput = document.getElementById(`custom_quantity-${flavor_id}`);
+        const totalPriceElement = document.getElementById(`total_price-${flavor_id}`);
+        const quantity = parseFloat(customQuantityInput.value);
+
+        if (!isNaN(quantity) && quantity > 0) {
+            const totalPrice = price_per_ltr * quantity;
+            totalPriceElement.textContent = totalPrice.toFixed(2); // Display total price with two decimal places
+        } else {
+            totalPriceElement.textContent = "0";
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const forms = document.querySelectorAll('.order-form');
+
+        forms.forEach(form => {
+            const radioButtons = form.querySelectorAll('input[name="quantity"]');
+            const customQuantityInput = form.querySelector('input[name="custom_quantity"]');
+            const totalPriceElement = form.querySelector('span[id^="total_price-"]');
+            let lastCheckedRadio = null;
+
+            // Reset custom quantity and total price on page load
+            customQuantityInput.value = '';
+            totalPriceElement.textContent = '0';
+
+            radioButtons.forEach(radio => {
+                radio.addEventListener('click', function() {
+                    if (lastCheckedRadio === this) {
+                        this.checked = false;
+                        lastCheckedRadio = null;
+                        customQuantityInput.disabled = false; // Enable custom quantity if radio is deselected
+                    } else {
+                        lastCheckedRadio = this;
+                        customQuantityInput.disabled = true;  // Disable custom quantity when a radio button is selected
+                    }
+                });
+            });
+
+            customQuantityInput.addEventListener('input', function() {
+                radioButtons.forEach(radio => {
+                    radio.checked = false; // Deselect radio buttons when custom quantity is entered
+                });
+                lastCheckedRadio = null;
+                customQuantityInput.disabled = false; // Enable custom quantity input
+            });
+        });
+    });
+
+    function validateForm() {
+        var form = event.target.form;
+        var quantityRadioButtons = form.querySelectorAll('input[name="quantity"]');
+        var customQuantityInput = form.querySelector('input[name="custom_quantity"]');
+
+        var radioChecked = Array.from(quantityRadioButtons).some(radio => radio.checked);
+        var customQuantityEntered = customQuantityInput.value.trim() !== "" && !customQuantityInput.disabled;
+        var customQuantity = parseFloat(customQuantityInput.value);
+
+        // If both a radio button and a custom quantity are checked/entered
+        if (radioChecked && customQuantityEntered) {
+            alert("Please select either a predefined quantity or enter a custom quantity, not both.");
+            return false;  // Prevent form submission
+        }
+
+        // If neither option is selected
+        if (!radioChecked && !customQuantityEntered) {
+            alert("Please select a predefined quantity or enter a custom quantity.");
+            return false;  // Prevent form submission
+        }
+
+        // Check for custom quantity and if it's valid (>= 50 grams)
+        if (customQuantityInput.disabled === false && customQuantityEntered) {
+            if (isNaN(customQuantity) || customQuantity < 50) {
+                alert("Custom quantity must be at least 50 grams.");
+                return false;  // Prevent form submission
+            }
+        }
+
+        return true;  // Allow form submission
+    }
+</script>
+
+{% endblock body %}

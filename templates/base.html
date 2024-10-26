@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock title %} | Pearl Foods</title>
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'images/spice.jpg' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .navbar-brand.custom-brand {
+            background-color: white;
+            color: black !important;
+        }
+        #message-container {
+            display: none; /* Hide by default */
+            margin: 0; /* Remove margin */
+            width: 100%;
+            position: relative; /* Position for alerts */
+        }
+        .alert {
+            margin: 0; /* Remove margin */
+            padding: 5px; /* Minimal padding */
+            width: 100%; /* Full width */
+            position: relative; /* Position for fade effect */
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Space between text and close button */
+            align-items: center; /* Center align items vertically */
+            box-shadow: none; /* Remove shadow if not needed */
+        }
+        .alert-dismissible .btn-close {
+            padding: 0; /* Remove padding on close button */
+            margin-left: 10px; /* Space between message and button */
+            align-self: flex-start; /* Align close button */
+        }
+        .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+            display: block; /* Show the dropdown menu */
+        }
+        
+        .dropdown-menu {
+            margin-top: 0; /* Optional: Adjust dropdown position */
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+        <div class="container-fluid p-0" style= "margin-left:5px;">
+            <a class="navbar-brand" href="/">Pearl Foods</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Products
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/masala_flavors">Masala Flavors</a></li>
+                            <li><a class="dropdown-item" href="/flour_flavors">Flour</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/remedies">Home Remedies</a></li>
+                            <li><a class="dropdown-item" href="/oil">Oils</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/recipes">Recipes</a></li>
+                            <li><a class="dropdown-item" href="/honey">Honey</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contacts">Contact Us</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cart_detail' %}">
+                            View Cart 
+                            
+                        </a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'my_orders' %}">My Orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger">Logout</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Display Messages -->
+    {% if messages %}
+    <div id="message-container" class="container mt-0">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block body %}{% endblock body %}
+
+    <!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/7/5lJgHk4G5W4H59YOvo1Ko1BftNmYgjHDmS0" crossorigin="anonymous"></script>
+<!-- Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-w8y2yzB5Z5pOewWWEl4b8I4H+N2YyoS1IOg09Da5nbcN4s2gAsIAPF4QYcp67bi5" crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const messageContainer = document.getElementById("message-container");
+            if (messageContainer) {
+                messageContainer.style.display = 'block'; // Show the message container if there are messages
+                setTimeout(() => {
+                    const alerts = messageContainer.querySelectorAll('.alert');
+                    alerts.forEach(alert => {
+                        alert.classList.remove('show');
+                        alert.classList.add('fade');
+                        setTimeout(() => {
+                            alert.remove(); // Remove alert after fade effect
+                            if (messageContainer.children.length === 0) {
+                                messageContainer.style.display = 'none'; // Hide the container if no alerts remain
+                            }
+                        }, 500); // Wait for fade-out to finish before removing
+                    });
+                }, 2000); // Show messages for 2 seconds
+            }
+        });
+    </script>
+</body>
+</html>

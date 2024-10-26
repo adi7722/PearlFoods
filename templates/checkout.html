@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Checkout{% endblock title %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <!-- Bootstrap CSS CDN -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 5px;
+            padding: 5px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 5px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .delivery {
+            margin: 40px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding: 0px;
+        }
+        .payment-options {
+            margin-top: 5px;
+        }
+        .payment-options label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .payment-options .form-check {
+            margin-bottom: 5px;
+        }
+        .pickup-options {
+            display: none;
+        }
+        .order-summary {
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        .cod-total {
+            display: none;
+            margin-top: 5px;
+        }
+        .cod-total .total {
+            font-size: 1rem;
+        }
+        .readonly-field {
+            background-color: #e9ecef; /* Light gray background */
+            border: 1px solid #ced4da; /* Same border as other fields */
+            cursor: not-allowed; /* Cursor style to indicate it's not editable */
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            background-color: white;
+            color: black;
+            border: 1px solid black !important;
+        }
+        .readonly-field {
+            background-color: #e9ecef; /* Light gray background */
+            border: 1px solid #ced4da; /* Same border as other fields */
+            cursor: not-allowed; /* Cursor style to indicate it's not editable */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3 class="text-center">Checkout</h3>
+        <div class="order-summary">
+            <p>Order Total: PKR <span id="order-total">{{ total_price }}</span></p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Display form errors -->
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="id_name">Name:</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="text-danger">
+                        {% for error in form.name.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_email">Email:</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="text-danger">
+                        {% for error in form.email.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_phone_number">Phone:</label>
+                {{ form.phone_number }}
+                {% if form.phone_number.errors %}
+                    <div class="text-danger">
+                        {% for error in form.phone_number.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_delivery_address">Delivery Address:</label>
+                {{ form.delivery_address }}
+                {% if form.delivery_address.errors %}
+                    <div class="text-danger">
+                        {% for error in form.delivery_address.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="payment-options">
+                <label>Payment Method:</label>
+                <div class="form-check">
+                    <input class="form-check-input" style="border: 2px solid blue;" type="radio" name="payment_method" id="cod" value="COD" required>
+                    <label class="form-check-label" for="cod">
+                        Cash On Delivery (COD)
+                    </label>
+                </div>
+
+                <!-- COD Delivery fee and final total -->
+                <div class="cod-total">
+                    <div class="delivery">
+                        <p id="delivery-fee" style="margin: 0px;">Delivery Fee (COD): Rs. 250</p>
+                        <p class="total" style="margin: 0px;">Final Total: Rs. <span id="final-total">{{ total_price }}</span></p>
+                    </div>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" style="border: 2px solid blue;" type="radio" name="payment_method" id="selfpickup" value="selfpickup" required>
+                    <label class="form-check-label" for="selfpickup">
+                        Self Pickup
+                    </label>
+                </div>
+            </div>
+
+            <div class="pickup-options">
+                <div class="form-group">
+                    <label for="pickup_date">Pickup Date:</label>
+                    <input type="date" name="pickup_date" id="pickup_date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="pickup_time">Pickup Time:</label>
+                    <input type="time" name="pickup_time" id="pickup_time" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-md">Place Order</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js CDN -->
+    <script>
+        const codOption = document.getElementById('cod');
+        const selfPickupOption = document.getElementById('selfpickup');
+        const pickupOptions = document.querySelector('.pickup-options');
+        const codTotal = document.querySelector('.cod-total');
+        const orderTotal = parseFloat("{{ total_price }}");  // Get the total price from view
+        const finalTotal = document.getElementById('final-total');
+
+        // Toggle the pickup fields and cod total visibility
+        function updateFinalTotal() {
+            if (selfPickupOption.checked) {
+                pickupOptions.style.display = 'block';
+                codTotal.style.display = 'none';
+            } else if (codOption.checked) {
+                pickupOptions.style.display = 'none';
+                codTotal.style.display = 'block';
+                finalTotal.textContent = (orderTotal + 250).toFixed(2);  // Add delivery charge for COD
+            }
+        }
+
+        // Add event listeners to payment method radio buttons
+        codOption.addEventListener('change', updateFinalTotal);
+        selfPickupOption.addEventListener('change', updateFinalTotal);
+
+        // Initialize the total price on page load
+        updateFinalTotal();
+    </script>
+</body>
+</html>
+{% endblock body %}

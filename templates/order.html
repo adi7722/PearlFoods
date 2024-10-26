@@ -1,0 +1,15 @@
+<form action="{% url 'order_form' %}" method="get" class="order-form">
+    {% csrf_token %}
+    <input type="hidden" name="flavor" value="Vanilla Delight">
+    <div class="quantity-select">
+        <label for="quantity1">Select Quantity:</label>
+        <select id="quantity1" name="quantity" class="form-control">
+            <option value="250g">250g</option>
+            <option value="500g">500g</option>
+            <option value="1Kg">1Kg</option>
+        </select>
+    </div>
+    <div class="button-wrapper">
+        <button type="submit" class="btn btn-primary mt-2">Order Now</button>
+    </div>
+</form>

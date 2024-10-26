@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block title %}{{ user }}{% endblock title %}
+{% block body %}
+<style>
+    /* Card hover effect */
+    .card-hover:hover {
+        transform: scale(1.05); /* Slightly enlarge the card */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    }
+
+    /* Style for My Orders header */
+    .orders-header {
+        text-align: center;
+        margin-top: 20px;
+        padding: 20px; /* Padding around the text */
+        border-radius: 10px; /* Rounded corners */
+        display: inline-block;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Hover effect for My Orders header */
+    .orders-header:hover {
+        background-color: gray; /* Change background on hover */
+        color: white; /* Change text color on hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+    }
+</style>
+<div class="container">
+    <!-- Styled My Orders Header -->
+    <div class="text-center">
+        <h3 class="orders-header">My Orders</h3>
+    </div>
+
+    <!-- Cards Section -->
+    <div class="row text-center mb-4">
+        <div class="col-md-2">
+            <div class="card shadow-lg card-hover" style="border-radius: 15px;">
+                <div class="card-body">
+                    <strong><p class="card-text display-4">{{ total_orders }}</p></strong>
+                    <h5 class="card-title">Total Orders</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card shadow-lg card-hover" style="border-radius: 15px;">
+                <div class="card-body">
+                    <strong><p class="card-text display-4">{{ orders_processed }}</p></strong>
+                    <h5 class="card-title">Processed</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card shadow-lg card-hover" style="border-radius: 15px;">
+                <div class="card-body">
+                    <strong><p class="card-text display-4">{{ orders_shipped }}</p></strong>
+                    <h5 class="card-title">Shipped</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card shadow-lg card-hover" style="border-radius: 15px;">
+                <div class="card-body">
+                    <strong><p class="card-text display-4">{{ orders_delivered }}</p></strong>
+                    <h5 class="card-title">Delivered</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card shadow-lg card-hover" style="border-radius: 15px;">
+                <div class="card-body">
+                    <strong><p class="card-text display-4">{{ COD_orders.count }}</p></strong>
+                    <h5 class="card-title">COD Orders</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card shadow-lg card-hover" style="border-radius: 15px;">
+                <div class="card-body">
+                    <strong><p class="card-text display-4">{{ selfpickup_orders.count }}</p></strong>
+                    <h5 class="card-title">Self Pickup</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COD Orders Table -->
+    <h4 class="text-center">COD Orders</h4>
+    <table class="table table-hover table-bordered table-striped shadow-sm mb-4">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if COD_orders %}
+                {% for order in COD_orders %}
+                <tr class="text-center">
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.date }}</td>
+                    <td>{{ order.price }}</td>
+                    <td>{{ order.get_status_display }}</td>
+                    <td><a href="{% url 'order_details' order.id %}">View Details</a></td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">No COD orders.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <!-- Self Pickup Orders Table -->
+    <h4 class="text-center">Self Pickup Orders</h4>
+    <table class="table table-hover table-bordered table-striped shadow-sm">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Pickup Date</th>
+                <th>Pickup Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if selfpickup_orders %}
+                {% for order in selfpickup_orders %}
+                <tr class="text-center">
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.date }}</td>
+                    <td>{{ order.price }}</td>
+                    <td>{{ order.get_status_display }}</td>
+                    <td>{{ order.date_pickup }}</td>
+                    <td>{{ order.time_pickup|date:"h:i A" }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">No self pickup orders.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Order Form{% endblock title %}
+
+{% block body %}
+<style>
+    .heading {
+        background: black;
+        color: white;
+        padding: 5px;
+        margin: 10px 0; /* Added margin for spacing */
+        text-align: center; /* Center text */
+    }
+    .order-form-container {
+        max-width: 600px;
+        margin: auto;
+    }
+    .order-form input, .order-form select, .order-form textarea {
+        margin-bottom: 10px;
+        background-color: pink;
+        opacity: 0.6;
+        border: 1px solid #ccc;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="container order-form-container">
+    <h3 class="text-center heading" >Icecream Order Form</h3>
+    <form class="order-form" action="{% url 'order_confirmation' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="flavor" value="{{ flavor }}">
+        <input type="hidden" name="quantity" value="{{ quantity }}">
+        <input type="hidden" name="price" value="{{ price }}">
+        
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" class="form-control" required placeholder="Enter your Name...">
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Phone Number:</label>
+            <input type="phone" id="phone" name="phone" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="address">Delivery Address:</label>
+            <textarea id="address" name="address" class="form-control" required></textarea>
+        </div>
+        
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Confirm Order</button>
+        </div>
+    </form>
+</div>
+{% endblock body %}

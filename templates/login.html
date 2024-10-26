@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: white;
+            color: black;
+            border: 1px solid black !important;
+        }
+        .alert {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="card" style="width: 100%; max-width: 400px;">
+            <div class="card-header">
+                Login
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">Username:</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="alert alert-danger">
+                                {{ form.username.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.password.id_for_label }}" class="form-label">Password:</label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                            <div class="alert alert-danger">
+                                {{ form.password.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit">Login</button>
+                    </div>
+                    
+                </form>
+                <a href="{% url 'password_reset' %}">Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js CDN -->
+</body>
+</html>
+{% endblock %}
